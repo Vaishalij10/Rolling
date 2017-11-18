@@ -182,7 +182,7 @@ if (!$test) {
      *`$per_id`*
      
     "
-    ,"Test"
+    ,"Rathi-test"
             );
     //echo "$hn";
 }
@@ -191,7 +191,7 @@ if (!$test) {
 //print 'alert("Record Added successfully..")';
 
 mysqli_close($link);
-//header("Location: http://192.168.2.141/Rolling/Home.php");
+header("Location: http://192.168.2.141/Rolling/Home.php");
 exit();
 ?>
 

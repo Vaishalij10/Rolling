@@ -31,7 +31,7 @@
 	<div id="form_container">
 	
 		<h1><a>Rolling Mill Power Report</a></h1>
-                <form id="powerreport" class="appnitro"  method="post" action="AddPowerReport.php" onsubmit=" return confirm('Are you sure you want to submit this form?'); return onFormSubmit();">
+                <form id="powerreport" class="appnitro"  method="post" action="AddPowerReport.php" onsubmit="return duplicateDateCheck();">
 					<div class="form_description">
 			<h2>Rolling Mill Power Report</h2>
 			<p>This is your form description. Click here to edit.</p>

@@ -21,15 +21,11 @@ $res = mysqli_query($con, "select b.date,b.heat_number,
              b.bp3_mtr,
              b.bp6_mtr,
              b.total,
-             b.avg_3mtr_wt,
-             b.avg_6mtr_wt,
              r.reason_code,
              p.name,
              l.locationname,
              d.dname,
-             r.reason_code,
              b.bd_detail
-            
             from breakdown b , size s1 ,size s2,location l , department d , reason r ,person p
             where b.m1s = s1.sizename
             and b.m2s = s2.sizename
@@ -58,13 +54,10 @@ $columnHeader = "Date" . "\t" .
         "3 MTR BP" . "\t" .
         "6 MTR BP" . "\t" .
         "Total Number of BP" . "\t" .
-        "AVG 3 MTR Billet Wt" . "\t" .
-        "AVG 6 MTR Billet Wt" . "\t" .
-        "Responsible Person" . "\t" .
-        "Location Code" . "\t" .
-        "Department" . "\t" .
-        "Shift Foreman" . "\t" .
         "Reason Code" . "\t" .
+        "Responsible Person" . "\t" .
+        "Location_code" . "\t" .
+        "Department" . "\t" .
         "BD Detail" . "\t";
 
 $setData = '';

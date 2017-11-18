@@ -271,7 +271,7 @@ if ($result_prpt) {
 mysqli_close($link);
 
 //POSt Message to Slack CHANNEL ROLLING
- Slack::getInstance()->postMessagesToSlack_powerreport("
+ /**Slack::getInstance()->postMessagesToSlack_powerreport("
 Date-On = *$reading_date*
 Daily Unit= `$dailyunit`
 Monthly Unit= `$monthlyunit`
@@ -291,7 +291,7 @@ Elec.Down.Time=*$elec_down_time*
          ", "Test");
 
 // ON FORM SUBMITTED REDIRECTED TO THE HOME.PHP
-header("Location:http://192.168.2.141/Rolling/Home.php");
+header("Location:http://192.168.2.141/Rolling/Home.php");**/
 
 exit();
   

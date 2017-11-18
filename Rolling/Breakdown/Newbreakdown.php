@@ -29,20 +29,12 @@ include('..\Connection.php');
 
                     <!-- Load jQuery from Google's CDN -->
 
-
-
-
-
-
                     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
 
                         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>  
                         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
                         <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
                             <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>  
-
-
-
 
 
                             <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
@@ -61,7 +53,7 @@ include('..\Connection.php');
                                 <script type="text/javascript" src="./BDValidations.js"></script>
                                      <!-- VALIDATIONS OF THE TEXT BOX FIELD  -->
                                 
-                                
+                                     <p> <a href="http://192.168.2.141/Rolling/Home.php"> Home </a> </p>
                                 
                                 </head>
                                 <body id="main_body"  style="Padding:20px;">
@@ -69,7 +61,7 @@ include('..\Connection.php');
                                         <div id="form_container">
 
                                             <h1><a>JD-2 Breakdown Detail</a></h1>
-                                            <a href="index.php"> Home </a> 
+                                            
                                                 <form id="form_28072" class="appnitro"  method="post" action="Addbreakdown.php" onsubmit="return onFormSubmit(); return confirm('Are you sure you want to submit this form?');">
                                                 <div class="form_description">
 

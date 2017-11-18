@@ -160,5 +160,29 @@
   } 
    
 
-       
+function breakdownDeleteSummary(primaryKey){
+    if(confirm('Are you sure you want to delete this row?')){
+            $.ajax({
+                url: 'DeleteBreakdownSummary.php',
+                type: 'post',
+                async: false,
+                data: {'action': 'deleteBreakdownSummary', 'primaryKeyForDelete': primaryKey},
+                success: function (result) {
+                     if(result > 0){
+                         
+                         alert('Breakdown deleted successfully');
+                         location.reload();
+                     }
+                     else{
+                         alert('Issue in deleting Breakdown.');
+                     }
+                },
+                error: function (xhr, desc, err) {
+                    alert ('error');
+                    console.log(xhr);
+                    console.log("Details: " + desc + "\nError:" + err);
+                }
+        });
+    }
+}       
      

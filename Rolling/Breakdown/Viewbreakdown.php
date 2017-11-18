@@ -1,3 +1,9 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script type="text/javascript" src="./BDValidations.js"></script>
+    </head>
+</html>
 <?php
 
 
@@ -12,10 +18,6 @@ $date2 = date('Y-m-d', strtotime($date2));
 
 $_SESSION["date1"] = $date1;
 $_SESSION["date2"] = $date2;
-
-
-
-
 // Query to get the Details from the breakdown table on the basis of from date and to date .
 if ($link != NULL) {
     //$res=  mysqli_query($con,"select location.locationid,location.locationname from location INNER JOIN breakdown ON location.locationid=breakdown.breakdown_id");
@@ -31,15 +33,13 @@ if ($link != NULL) {
              b.bp3_mtr,
              b.bp6_mtr,
              b.total,
-             b.avg_3mtr_wt,
-             b.avg_6mtr_wt,
              r.reason_code,
              p.name,
              l.locationname,
              d.dname,
-             r.reason_code,
-             b.bd_detail
-            
+             b.bd_detail,
+             b.breakdown_id
+         
             from breakdown b , size s1 ,size s2,location l , department d , reason r ,person p
             where b.m1s = s1.sizename
             and b.m2s = s2.sizename
@@ -47,14 +47,14 @@ if ($link != NULL) {
             and b.department= d.departmentid
              and b.reasonid = r.reasonid
              and b.responsible_person= p.personid
-             and b.date >= '$date1' and b.date <= '$date2' order by b.date");
+             and b.date >= '$date1' and b.date <= '$date2' order by b.date, `heat_number` asc ");
     
-    echo "<table border=1>";
-    echo "<tr><td>Date</td>"
-    . "<td>Heat Number</td>"
-    . "<td>Mill-1 Size</td>"
-    . "<td>Mill-2 Size</td>"
-    . "<td>Shift</td>"
+    echo "<table border='black'>";
+    echo "<tr><td> Date </td>"
+    . "<td>Heat Number </td>"
+    . "<td> Mill-1 Size </td>"
+    . "<td> Mill-2 Size </td>"
+    . "<td> Shift</td>"
     . "<td>BD Start Time</td>"
     . "<td>BD End Time</td>"
     . "<td>BD Total Time</td>"
@@ -66,14 +66,12 @@ if ($link != NULL) {
     . "<td>3 MTR BP</td>"
     . "<td>6 MTR BP</td>"
     . "<td>Total Number of BP</td>"
-    . "<td>AVG 3 MTR Billet Wt</td>"
-    . "<td>AVG 6 MTR Billet Wt</td>"
-    . "<td>Responsible Person</td>"
-    . "<td>Location Code</td>"
-    . "<td>Department</td>"
-    . "<td>Shift Foreman</td>"
     . "<td>Reason Code</td>"
-    . "<td>BD Detail</td>";
+    . "<td>Responsible Person</td>"
+    . "<td>Location_code</td>"
+    . "<td>Department</td>"
+    . "<td>BD Detail</td>"
+    . "<td>delete button</td>";
     
     
     //echo $date1;
@@ -83,8 +81,10 @@ if ($link != NULL) {
     echo 'Breakdown Details ';
     while ($row = mysqli_fetch_array($res)) {
         echo "<tr>";
-        for ($i = 0; $i <24; $i++)
+        for ($i = 0; $i <21; $i++){
             echo "<td>" . $row[$i] . "</td>";
+        }
+        echo "<td><button id='".$row[21]."' type=\"button\" onclick=\"breakdownDeleteSummary(this.id);\"> Delete </button></td>";
     }
     echo "</table>";
 } else

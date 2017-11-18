@@ -80,8 +80,7 @@
                         document.getElementById("mpebmvaerror").style.display = ret ? "none" : "inline";
                         return ret;
                     }
-
-                   
+          
                    function onFormSubmit(){
       //alert ('hi');
       
@@ -98,5 +97,44 @@
        
        }
   } 
+   function duplicateDateCheck() {
+    //  alert ('in test Validation Function ');
    
-                    
+    var readingDate = document.getElementById("datetime").value;
+    //alert(heatnumber);
+    //alert(readingDate);
+    var finalResult;
+    $(document).ready(function () {
+        $.ajax({
+            url: 'DateCheckValidation.php',
+            type: 'post',
+            async: false,
+            data: {'action': 'powerDateCheck', 'readingDate': readingDate},
+            success: function (result) {
+               //alert ('hi_a');
+              // alert (result); 
+               //alert('hi');
+                if (result > 0) {
+                    alert("Date is already exists ,Please check date and Enter Correct One");
+                    finalResult = false;
+                } else {
+                    if (confirm('ARE YOU SURE YOU WANT TO SUBMIT THE FORM ?'))
+                  
+                    {
+                        finalResult = true;
+                         
+                    } else {
+                        finalResult = false;
+                    }
+                }
+            },
+            error: function (xhr, desc, err) {
+                console.log(xhr);
+                console.log("Details: " + desc + "\nError:" + err);
+            }
+        });
+    });
+   
+    // alert('FinalResulpowerDateCheckt');
+    return finalResult;
+   }     

@@ -76,7 +76,7 @@ class Slack {
     public function postMessagesToSlack_powerreport($message, $room) {
         
      
-        $icon = ":robot_face:";
+        //$icon = ":robot_face:";
         $data = "payload=" . json_encode(array("channel" => "#{$room}","username" =>"Power Report", "text" => $message));
         //$data1 = "payload=" . json_encode($data, $options, $depth)
         
@@ -96,5 +96,55 @@ class Slack {
         }
         curl_close($ch);
         
+    }  
+    
+    
+    public function postMessagesToSlack_rollingkpi($message, $room) {
+        
+     
+       // $icon = ":robot_face:";
+        $data = "payload=" . json_encode(array("channel" => "#{$room}","username" =>"Production Report", "text" => $message));
+        //$data1 = "payload=" . json_encode($data, $options, $depth)
+        
+        $url = "https://hooks.slack.com/services/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";
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        $result = curl_exec($ch);
+        echo $ch;
+        //echo var_dump($result);
+        if ($result == false) {
+            echo 'in perheat';
+            echo 'Curl error: '.curl_error($ch);
+        }
+        curl_close($ch);
+        
     }   
+        public function postMessagesToSlack_productionreport($message, $room) {
+        
+     
+       // $icon = ":robot_face:";
+        $data = "payload=" . json_encode(array("channel" => "#{$room}","username" =>"24 Hours Production Report", "text" => $message));
+        //$data1 = "payload=" . json_encode($data, $options, $depth)
+        
+        $url = "https://hooks.slack.com/services/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";
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        $result = curl_exec($ch);
+        echo $ch;
+        //echo var_dump($result);
+        if ($result == false) {
+            echo 'in perheat';
+            echo 'Curl error: '.curl_error($ch);
+        }
+        curl_close($ch);
+        
+    } 
 }

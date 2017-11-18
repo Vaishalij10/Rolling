@@ -60,7 +60,7 @@ and open the template in the editor.
              var checkbd=document.getElementById("breakdown").checked;
              var checkph=document.getElementById("perheat").checked;
              var checkpr=document.getElementById("powerreport").checked;
-             
+             var checkkpi=document.getElementById("rollingkpi").checked;
              var formx=document.getElementById("dateHolder");
              
              if( checkbd === true)
@@ -69,14 +69,17 @@ and open the template in the editor.
            <!-- alert('breakdown');-->
             formx.action='Breakdown/viewbreakdown.php';
             formx.submit();
+           
         }
 
         else if(checkph === true)
         {
             <!--alert('perheat');-->
-            formx.action='Perheat/ViewPerHeat.php';
+            formx.action='RPerheat/ViewPerHeat.php';
             formx.submit();
         }   
+        
+        
         
         
          else if(checkpr === true)
@@ -85,20 +88,39 @@ and open the template in the editor.
             formx.action='PowerReport/ViewPowerReport.php';
             formx.submit();
         }   
+        
+        
+        else if(checkkpi === true)
+        {
+            <!--alert('perheat');-->
+            formx.action='KPI/ViewRollingKPI.php';
+            formx.submit();
+        }   
         else
         {
             alert('please select check box ');
         }
     }
-
+    
+    
+   
     </script>
+    <script>
+   function test()
+    {
+    alert('hi');
+  
+    }
+    </script>
+    
     
             <div class="demo-content">
                 <h2 class="title_with_link">Rolling Form</h2>
                 <h3> PLEASE SELECT OPTION TO GET THE DETAILS IN THE EXCEL </h3>
                 <input type="radio" name="rolling" id="breakdown" />Breakdown 
                 <input type="radio" name="rolling" id="perheat"/> Per heat 
-                <input type="radio" name="rolling" id="powerreport"/> Power Report <br><br>
+                <input type="radio" name="rolling" id="powerreport"/> Power Report 
+                <input type="radio" name="rolling" id="rollingkpi"/> Rolling KPI<br> <br>
                   
                   <form id="dateHolder" name="dateHolder" method="GET"  action="">
                       
@@ -108,8 +130,7 @@ and open the template in the editor.
 
 
 
-
-                        <input  type="button" name="search" value="Submit"  onclick="redirect();"/><br>
+                        <input  type="button" name="search" value="Submit"  onclick="redirect();" /><br>
                     <br>
                 </form>
                 Still not filled a breakdown form <a href="Breakdown\Newbreakdown.php">Click here to fill Rolling Breakdown</a>
@@ -117,7 +138,7 @@ and open the template in the editor.
                  <br><br>
                         
                  
-               Still not filled a Per Heat form   <a href="Perheat\NewPerHeatProd.php"> Click here to fill Per heat Production </a>
+               Still not filled a Per Heat form   <a href="RPerheat\NewPerHeatProd.php"> Click here to fill Per heat Production </a>
 
                 <br><br>
                         

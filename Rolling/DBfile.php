@@ -54,7 +54,7 @@ class RollingBD extends mysqli {
             // print_r($row );die;
             return $row[0];
         } else
-            return null;
+            return 0;
         //return $this->query("SELECT id FROM size WHERE sizename = " . $m1size);
     }
      
@@ -72,7 +72,7 @@ class RollingBD extends mysqli {
             // print_r($row );die;
             return $row[0];
         } else
-            return null;
+            return 0;
         //return $this->query("SELECT id FROM size WHERE sizename = " . $m1size);
     }
     public function get_person_id($responsible_person) {
@@ -86,7 +86,7 @@ class RollingBD extends mysqli {
             // print_r($row );die;
             return $row[0];
         } else
-            return null;
+            return 0;
         //return $this->query("SELECT id FROM size WHERE sizename = " . $m1size);
     }
      public function get_location_id($location_code) {
@@ -100,7 +100,7 @@ class RollingBD extends mysqli {
             // print_r($row );die;
             return $row[0];
         } else
-            return null;
+            return 0;
         //return $this->query("SELECT id FROM size WHERE sizename = " . $m1size);
     }
     
@@ -115,75 +115,78 @@ class RollingBD extends mysqli {
             // print_r($row );die;
             return $row[0];
         } else
-            return null;
+            return 0;
         //return $this->query("SELECT id FROM size WHERE sizename = " . $m1size);
     }
 
     
     public function get_roughing_mr_prod_mill1($kpidate,$heatnumber,$m1s) {
         $kpi_date = $this->real_escape_string($kpidate);
+         $heatnumber = $this->real_escape_string($heatnumber);
         $show_date = DateTime::createFromFormat('d/m/Y', $kpi_date)->format('Y-m-d');
         echo $show_date;
       
        $m1s= $this->real_escape_string($m1s);
         echo "<br>";
         $s1 = $this->query("SELECT sum(mr_production) FROM  breakdown  WHERE 
-                date ='".$show_date."'and m1s='".$m1s."' and location_code in(7,8,12) ");
-        if ($r11 = $s1->num_rows > 0) {
+                date ='".$show_date."'and m1s='".$m1s."' and location_code in(7,8,12)and heat_number='".$heatnumber."' ");
+        if ( $s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
             return $r1[0];
         } else {
-            return null;
+            return 0;
         }
     }
     
       public function get_roughing_mr_prod_mill2($kpidate,$heatnumber,$m2s) {
         $kpi_date = $this->real_escape_string($kpidate);
+        $heatnumber = $this->real_escape_string($heatnumber);
         $show_date = DateTime::createFromFormat('d/m/Y', $kpi_date)->format('Y-m-d');
         echo $show_date;
       
        $m2s= $this->real_escape_string($m2s);
         echo "<br>";
-        $s1 = $this->query("SELECT sum(mr_production) FROM  breakdown    WHERE 
-               date ='".$show_date."'and m2s='".$m2s."' and  locationid in(9,10,13,14) ");
-        if ($r11 = $s1->num_rows > 0) {
+        $s1 = $this->query("SELECT sum(mr_production) FROM  breakdown  WHERE 
+               date ='".$show_date."' and  m2s='".$m2s."' and  location_code in(9,10,13,14) and heat_number='".$heatnumber."' ");
+        if ( $s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
             return $r1[0];
         } else {
-            return null;
+            return 0;
         }
     }
     
     public function get_cutting_prod_mill1($kpidate,$heatnumber,$m1s) {
         $kpi_date = $this->real_escape_string($kpidate);
         $show_date = DateTime::createFromFormat('d/m/Y', $kpi_date)->format('Y-m-d');
+          $heatnumber = $this->real_escape_string($heatnumber);
         echo $show_date;
       
        $m1s= $this->real_escape_string($m1s);
         echo "<br>";
         $s1 = $this->query("SELECT sum(cutting_wt) FROM breakdown   WHERE 
           date ='".$show_date."'and m1s= '".$m1s."' and heat_number='".$heatnumber."' and location_code in(7,8,12) ");
-        if ($r11 = $s1->num_rows > 0) {
+        if ( $s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
             return $r1[0];
         } else {
-            return null;
+            return 0;
         }
     }
-    public function get_cutting_prod_mill2($kpidate,$heatnumber,$m1s) {
+    public function get_cutting_prod_mill2($kpidate,$heatnumber,$m2s) {
         $kpi_date = $this->real_escape_string($kpidate);
         $show_date = DateTime::createFromFormat('d/m/Y', $kpi_date)->format('Y-m-d');
+          $heatnumber = $this->real_escape_string($heatnumber);
         echo $show_date;
-      
        $m2s= $this->real_escape_string($m2s);
         echo "<br>";
         $s1 = $this->query("SELECT sum(cutting_wt) FROM breakdown  WHERE 
-                 date ='".$show_date."' and m1s='".$m2s."' and heat_number='".$heatnumber."' and  location_code in(9,10,13) ");
-        if ($r11 = $s1->num_rows > 0) {
+                 date ='".$show_date."' and m2s='".$m2s."' and heat_number='".$heatnumber."' and  location_code in(9,10,13) ");
+        if ( $s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
             return $r1[0];
         } else {
-            return null;
+            return 0;
         }
     }
     
@@ -191,15 +194,14 @@ class RollingBD extends mysqli {
     public function get_heat_count($kpidate) {
         $kpi_date = $this->real_escape_string($kpidate);
         $show_date = DateTime::createFromFormat('d/m/Y', $kpi_date)->format('Y-m-d');
-      
         echo "<br>";
         $s1 = $this->query("SELECT count(`heat-number`) FROM per_heat_production WHERE perheatdate = '" . $show_date . "'");
-        if ($r11 = $s1->num_rows > 0) {
+        if ( $s1->num_rows > 0) {
            
             $r1 = $s1->fetch_row();
             return $r1[0];
         } else
-            return null;
+            return 0;
     }
      public function get_rolling_prod($kpidate) {
         $kpi_date = $this->real_escape_string($kpidate);
@@ -208,14 +210,14 @@ class RollingBD extends mysqli {
         //echo $show_date;
         echo "<br>";
         $s1 = $this->query("SELECT sum(rollingprod) FROM per_heat_production WHERE perheatdate = '" . $show_date . "'");
-        if ($r11 = $s1->num_rows > 0) {
+        if ( $s1->num_rows > 0) {
            
             $r1 = $s1->fetch_row();
             
             return $r1[0];
            
         } else{
-            return null;
+            return 0;
         }
     }
 
@@ -226,15 +228,15 @@ class RollingBD extends mysqli {
         //echo $show_date;
         echo "<br>";
         $s1 = $this->query("SELECT sum(ccmprod) FROM per_heat_production WHERE perheatdate = '" . $show_date . "'");
-        if ($r11 = $s1->num_rows > 0) {
+        if ( $s1->num_rows > 0) {
             $r1 = $s1->fetch_row();   
             return $r1[0];
            
         } else{
-            return null;
+            return 0;
         }
             }
-
+//TIME_FORMAT((SUM(`total-heat-time`)),'%H:%i')
     
             //select  TIME_FORMAT((SUM(`bd_total_time`)),'%H:%i') from breakdown where date ='".$reading_date."'
             
@@ -244,13 +246,13 @@ class RollingBD extends mysqli {
        // echo $kpi_date;
         //echo $show_date;
         echo "<br>";
-        $s1 = $this->query("select  TIME_FORMAT((SUM(`total-heat-time`)),'%H:%i') from per_heat_production WHERE perheatdate = '" . $show_date . "'");
-        if ($r11 = $s1->num_rows > 0) {
+        $s1 = $this->query("select SEC_TO_TIME(SUM(TIME_TO_SEC(`total-heat-time`))) from per_heat_production WHERE perheatdate = '" . $show_date . "'");
+        if ( $s1->num_rows > 0) {
             $r1 = $s1->fetch_row();   
             return $r1[0];
            
         } else{
-            return null;
+            return 0;
         }
             
            } 
@@ -262,11 +264,11 @@ class RollingBD extends mysqli {
        
         echo "<br>";
         $s1 = $this->query("select sum(total)from breakdown WHERE date= '" . $show_date . "' and department='" . $department . "'");
-        if ($r11 = $s1->num_rows > 0) {
+        if ( $s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
             return $r1[0];
         } else {
-            return null;
+            return 0;
         }
     }    
     
@@ -276,13 +278,13 @@ class RollingBD extends mysqli {
    
         echo "<br>";
         $s1 = $this->query("select sum(3st3mtrbbp)from per_heat_production WHERE perheatdate= '" . $show_date . "'");
-        if ($r11 = $s1->num_rows > 0) {
+        if ( $s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
          
             return $r1[0];
             
         } else {
-            return null;
+            return 0;
         }
     } 
        
@@ -292,15 +294,65 @@ class RollingBD extends mysqli {
    
         echo "<br>";
         $s1 = $this->query("select sum(3st6mtrbbp) from per_heat_production WHERE perheatdate= '" . $show_date . "'");
-        if ($r11 = $s1->num_rows > 0) {
+        if ( $s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
             echo $r1[0];
             return $r1[0];
             
         } else {
-            return null;
+            return 0;
         }
     } 
+      public function get_billets_bypass_3mtr_ccm($kpidate) {
+        $kpi_date = $this->real_escape_string($kpidate);
+        $show_date = DateTime::createFromFormat('d/m/Y', $kpi_date)->format('Y-m-d');
+   
+        echo "<br>";
+        $s1 = $this->query("select sum(ccm3mtrbbp) from per_heat_production WHERE perheatdate= '" . $show_date . "'");
+        if ( $s1->num_rows > 0) {
+            $r1 = $s1->fetch_row();
+            echo $r1[0];
+            return $r1[0];
+            
+        } else {
+            return 0;
+        }
+    } 
+     public function get_billets_bypass_6mtr_ccm($kpidate) {
+        $kpi_date = $this->real_escape_string($kpidate);
+        $show_date = DateTime::createFromFormat('d/m/Y', $kpi_date)->format('Y-m-d');
+   
+        echo "<br>";
+        $s1 = $this->query("select sum(ccm6mtrbbp) from per_heat_production WHERE perheatdate= '" . $show_date . "'");
+        if ( $s1->num_rows > 0) {
+            $r1 = $s1->fetch_row();
+            echo $r1[0];
+            return $r1[0];
+            
+        } else {
+            return 0;
+        }
+    } 
+    
+     public function billets_bypass_prod_3rdstand ($kpidate) {
+        $kpi_date = $this->real_escape_string($kpidate);
+        $show_date = DateTime::createFromFormat('d/m/Y', $kpi_date)->format('Y-m-d');
+   
+        echo "<br>";
+        $s1 = $this->query("select sum(bbprod3st) from per_heat_production WHERE perheatdate= '" . $show_date . "'");
+        if ( $s1->num_rows > 0) {
+            $r1 = $s1->fetch_row();
+            echo $r1[0];
+            return $r1[0];
+            
+        } else {
+            return 0;
+        }
+    } 
+    
+    
+    
+    
     
     public function get_bl_8mm($kpidate) {
         $kpi_date = $this->real_escape_string($kpidate);
@@ -308,13 +360,13 @@ class RollingBD extends mysqli {
    
         echo "<br>";
         $s1 = $this->query("select sum(8mm) from per_heat_production WHERE perheatdate= '" . $show_date . "'");
-        if ($r11 = $s1->num_rows > 0) {
+        if ( $s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
             echo $r1[0];
             return $r1[0];
             
         } else {
-            return null;
+            return 0;
         }
     } 
     public function get_bl_10mm($kpidate) {
@@ -323,13 +375,13 @@ class RollingBD extends mysqli {
    
         echo "<br>";
         $s1 = $this->query("select sum(10mm) from per_heat_production WHERE perheatdate= '" . $show_date . "'");
-        if ($r11 = $s1->num_rows > 0) {
+        if ( $s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
             echo $r1[0];
             return $r1[0];
             
         } else {
-            return null;
+            return 0;
         }
     } 
        public function get_bl_12mm($kpidate) {
@@ -338,13 +390,13 @@ class RollingBD extends mysqli {
    
         echo "<br>";
         $s1 = $this->query("select sum(12mm) from per_heat_production WHERE perheatdate= '" . $show_date . "'");
-        if ($r11 = $s1->num_rows > 0) {
+        if ( $s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
             echo $r1[0];
             return $r1[0];
             
         } else {
-            return null;
+            return 0;
         }
     } 
     public function get_bl_16mm($kpidate) {
@@ -353,13 +405,13 @@ class RollingBD extends mysqli {
    
         echo "<br>";
         $s1 = $this->query("select sum(16mm) from per_heat_production WHERE perheatdate= '" . $show_date . "'");
-        if ($r11 = $s1->num_rows > 0) {
+        if ( $s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
             echo $r1[0];
             return $r1[0];
             
         } else {
-            return null;
+            return 0;
         }
     }    
     
@@ -369,13 +421,13 @@ class RollingBD extends mysqli {
    
         echo "<br>";
         $s1 = $this->query("select sum(20mm) from per_heat_production WHERE perheatdate= '" . $show_date . "'");
-        if ($r11 = $s1->num_rows > 0) {
+        if ( $s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
             echo $r1[0];
             return $r1[0];
             
         } else {
-            return null;
+            return 0;
         }
     } 
     public function get_bl_25mm($kpidate) {
@@ -384,13 +436,13 @@ class RollingBD extends mysqli {
    
         echo "<br>";
         $s1 = $this->query("select sum(25mm) from per_heat_production WHERE perheatdate= '" . $show_date . "'");
-        if ($r11 = $s1->num_rows > 0) {
+        if ( $s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
             echo $r1[0];
             return $r1[0];
             
         } else {
-            return null;
+            return 0;
         }
     } 
     public function get_bl_28mm($kpidate) {
@@ -399,13 +451,13 @@ class RollingBD extends mysqli {
    
         echo "<br>";
         $s1 = $this->query("select sum(28mm) from per_heat_production WHERE perheatdate= '" . $show_date . "'");
-        if ($r11 = $s1->num_rows > 0) {
+        if ( $s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
             echo $r1[0];
             return $r1[0];
             
         } else {
-            return null;
+            return 0;
         }
     } 
     public function get_bl_32mm($kpidate) {
@@ -414,13 +466,13 @@ class RollingBD extends mysqli {
    
         echo "<br>";
         $s1 = $this->query("select sum(32mm) from per_heat_production WHERE perheatdate= '" . $show_date . "'");
-        if ($r11 = $s1->num_rows > 0) {
+        if ( $s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
             echo $r1[0];
             return $r1[0];
             
         } else {
-            return null;
+            return 0;
         }
     } 
     
@@ -430,13 +482,13 @@ class RollingBD extends mysqli {
    
         echo "<br>";
         $s1 = $this->query("select sum(mr_production) from breakdown WHERE date= '" . $show_date . "'");
-        if ($r11 = $s1->num_rows > 0) {
+        if ( $s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
             echo $r1[0];
             return $r1[0];
             
         } else {
-            return null;
+            return 0;
         }
     } 
     
@@ -447,13 +499,13 @@ class RollingBD extends mysqli {
    
         echo "<br>";
         $s1 = $this->query("select sum(mr_production) from breakdown WHERE date= '" . $show_date . "' and department in(3,4,4)");
-        if ($r11 = $s1->num_rows > 0) {
+        if ( $s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
             echo $r1[0];
             return $r1[0];
             
         } else {
-            return null;
+            return 0;
         }
     } 
    public function get_total_mr_ina_day($kpidate) {
@@ -462,13 +514,13 @@ class RollingBD extends mysqli {
    
         echo "<br>";
         $s1 = $this->query("select sum(total_mr) from breakdown WHERE date= '" . $show_date . "'");
-        if ($r11 = $s1->num_rows > 0) {
+        if ( $s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
             echo $r1[0];
             return $r1[0];
             
         } else {
-            return null;
+            return 0;
         }   
     
 }
@@ -482,13 +534,13 @@ class RollingBD extends mysqli {
         echo "<br>";
         $s1 = $this->query("select sum(total_mr)from breakdown b WHERE date= '" . $show_date . "' and department='" . $department . "'");
       
-        if ($r11 = $s1->num_rows > 0) {
+        if ( $s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
             echo $r1[0];
             return $r1[0];
             
         } else {
-            return null;
+            return 0;
         }   
     
 }
@@ -501,13 +553,13 @@ class RollingBD extends mysqli {
    
         echo "<br>";
         $s1 = $this->query("select sum(dependent_mr) from breakdown WHERE date= '" . $show_date . "'");
-        if ($r11 = $s1->num_rows > 0) {
+        if ( $s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
             echo $r1[0];
             return $r1[0];
             
         } else {
-            return null;
+            return 0;
         }   
     
 }
@@ -518,13 +570,13 @@ public function get_indepen_mr($kpidate) {
    
         echo "<br>";
         $s1 = $this->query("select sum(independent_mr) from breakdown WHERE date= '" . $show_date . "'");
-        if ($r11 = $s1->num_rows > 0) {
+        if ( $s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
             echo $r1[0];
             return $r1[0];
             
         } else {
-            return null;
+            return 0;
         }   
     
 }
@@ -535,13 +587,13 @@ public function get_total_cutting($kpidate) {
    
         echo "<br>";
         $s1 = $this->query("select sum(no_of_cutting) from breakdown WHERE date= '" . $show_date . "'");
-        if ($r11 = $s1->num_rows > 0) {
+        if ( $s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
             echo $r1[0];
             return $r1[0];
             
         } else {
-            return null;
+            return 0;
         }   
     
 }
@@ -553,13 +605,13 @@ public function get_total_cutting_mill($kpidate) {
         echo "<br>";
         $s1 = $this->query("select sum(no_of_cutting) from breakdown b ,department d  WHERE  b.department=d.departmentid and
                 date= '" . $show_date . "' and d.dname in ('Mill','Mechanical','Electrical')");
-        if ($r11 = $s1->num_rows > 0) {
+        if ( $s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
             echo $r1[0];
             return $r1[0];
             
         } else {
-            return null;
+            return 0;
         }   
     
 }
@@ -571,13 +623,13 @@ public function get_total_cutting_ccm($kpidate) {
         echo "<br>";
         $s1 = $this->query("select sum(no_of_cutting) from breakdown b ,department d  WHERE  b.department=d.departmentid and
                 date= '" . $show_date . "' and d.dname ='CCM'");
-        if ($r11 = $s1->num_rows > 0) {
+        if ( $s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
             echo $r1[0];
             return $r1[0];
             
         } else {
-            return null;
+            return 0;
         }   
     
 }
@@ -589,13 +641,13 @@ public function get_total_cutting_fnce($kpidate) {
         echo "<br>";
         $s1 = $this->query("select sum(no_of_cutting) from breakdown b ,department d  WHERE  b.department=d.departmentid and
                 date= '" . $show_date . "' and d.dname ='Furnace'");
-        if ($r11 = $s1->num_rows > 0) {
+        if ( $s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
             echo $r1[0];
             return $r1[0];
             
         } else {
-            return null;
+            return 0;
         }   
     
 }
@@ -608,13 +660,13 @@ public function get_total_cutting_mpeb($kpidate) {
         echo "<br>";
         $s1 = $this->query("select sum(no_of_cutting) from breakdown b ,department d  WHERE  b.department=d.departmentid and
                 date= '" . $show_date . "' and d.dname ='MPEB'");
-        if ($r11 = $s1->num_rows > 0) {
+        if ( $s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
             echo $r1[0];
             return $r1[0];
             
         } else {
-            return null;
+            return 0;
         }   
     
 }
@@ -625,13 +677,17 @@ public function get_prod_down_time($kpidate,$department) {
         $department = $this->real_escape_string($department);
         echo "<br>";
         $s1 = $this->query("select TIME_FORMAT((SUM(`bd_total_time`)),'%H:%i') from breakdown b WHERE date= '" . $show_date . "' and department='" . $department . "'");
-        if ($r11 = $s1->num_rows > 0) {
+        if ( $s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
             echo $r1[0];
-            return $r1[0];
+            $test=$r1[0];
+          $test1= date('H', strtotime($test))*60 + date('i', strtotime($test));
+            return $test1;
+            echo "test"; echo"<br>";
+            echo $test1;
             
         } else {
-            return null;
+            return 0;
         }   
     
 }
@@ -641,13 +697,29 @@ public function get_bypass_prod($kpidate,$department) {
           $department = $this->real_escape_string($department);
         echo "<br>";
         $s1 = $this->query("select sum(total_bbp_production) from breakdown b WHERE date= '" . $show_date . "' and department='" . $department . "'");
-        if ($r11 = $s1->num_rows > 0) {
+        if ( $s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
             echo $r1[0];
             return $r1[0];
             
         } else {
-            return null;
+            return 0;
+        }   
+    
+}
+public function billets_by_pass_prod_due_ccm($kpidate) {
+        $kpi_date = $this->real_escape_string($kpidate);
+        $show_date = DateTime::createFromFormat('d/m/Y', $kpi_date)->format('Y-m-d');
+         
+        echo "<br>";
+        $s1 = $this->query("select sum(bbprodccm) from per_heat_production WHERE perheatdate= '" . $show_date . "'");
+        if ( $s1->num_rows > 0) {
+            $r1 = $s1->fetch_row();
+            echo $r1[0];
+            return $r1[0];
+            
+        } else {
+            return 0;
         }   
     
 }
@@ -655,19 +727,19 @@ public function get_bypass_prod($kpidate,$department) {
 
 
 
-public function get_total_rfmr_prod($kpidate) {
+/**public function get_total_rfmr_prod($kpidate) {
         $kpi_date = $this->real_escape_string($kpidate);
         $show_date = DateTime::createFromFormat('d/m/Y', $kpi_date)->format('Y-m-d');
         
         echo "<br>";
         $s1 = $this->query("select sum(totalrfmrprod) from per_heat_production WHERE perheatdate= '" . $show_date . "'");
-        if ($r11 = $s1->num_rows > 0) {
+        if ( $s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
             echo $r1[0];
             return $r1[0];
             
         } else {
-            return null;
+            return 0;
         }   
     
 }
@@ -679,31 +751,35 @@ public function get_total_cutting_prod($kpidate) {
         
         echo "<br>";
         $s1 = $this->query("select sum(cuttingprod) from per_heat_production WHERE perheatdate= '" . $show_date . "'");
-        if ($r11 = $s1->num_rows > 0) {
+        if ( $s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
             echo $r1[0];
             return $r1[0];
             
         } else {
-            return null;
+            return 0;
         }   
     
-}
-
+}**/
+//TIME_FORMAT((SUM(`bd_total_time`)),'%H:%i')
 
 public function get_prod_down_time_reason($kpidate,$reason) {
         $kpi_date = $this->real_escape_string($kpidate);
         $show_date = DateTime::createFromFormat('d/m/Y', $kpi_date)->format('Y-m-d');
         $reason = $this->real_escape_string($reason);
+        
         echo "<br>";
-        $s1 = $this->query("select TIME_FORMAT((SUM(`bd_total_time`)),'%H:%i') from breakdown b WHERE date= '" . $show_date . "' and reason='" . $reason . "'");
-        if ($r11 = $s1->num_rows > 0) {
+        $s1 = $this->query("select TIME_FORMAT((SUM(`bd_total_time`)),'%H:%i') from breakdown  WHERE date= '" . $show_date . "' and reasonid='" . $reason . "'");
+         $r11=0;
+        if ($s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
-            echo $r1[0];
-            return $r1[0];
+            $test=$r1[0];
+            echo $test;
+          $test1= date('H', strtotime($test))*60 + date('i', strtotime($test));
+            return $test1;
             
         } else {
-            return null;
+            return 0;
         }   
     
 }
@@ -712,16 +788,16 @@ public function get_prod_down_time_reason($kpidate,$reason) {
 public function get_bypass_prod_reason($kpidate,$reason) {
         $kpi_date = $this->real_escape_string($kpidate);
         $show_date = DateTime::createFromFormat('d/m/Y', $kpi_date)->format('Y-m-d');
-          $reason = $this->real_escape_string($reason);
+         $reason = $this->real_escape_string($reason);
         echo "<br>";
-        $s1 = $this->query("select sum(total_bbp_production) from breakdown b WHERE date= '" . $show_date . "' and department='" . $reason . "'");
-        if ($r11 = $s1->num_rows > 0) {
+        $s1 = $this->query("select sum(total_bbp_production) from breakdown  WHERE date= '" . $show_date . "' and reasonid='" . $reason . "'");
+        if ( $s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
             echo $r1[0];
             return $r1[0];
             
         } else {
-            return null;
+            return 0;
         }   
     
 }
@@ -734,12 +810,12 @@ public function get_bypass_prod_reason($kpidate,$reason) {
         $reason = $this->real_escape_string($reason);
        
         echo "<br>";
-        $s1 = $this->query("select sum(total)from breakdown WHERE date= '" . $show_date . "' and department='" . $reason . "'");
-        if ($r11 = $s1->num_rows > 0) {
+        $s1 = $this->query("select sum(total)from breakdown WHERE date= '" . $show_date . "' and reasonid='" . $reason . "'");
+        if ( $s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
             return $r1[0];
         } else {
-            return null;
+            return 0;
         }
     }   
 
@@ -749,11 +825,11 @@ public function get_bypass_prod_reason($kpidate,$reason) {
        
         echo "<br>";
         $s1 = $this->query("select sum(8rfmr)from per_heat_production WHERE perheatdate= '" . $show_date ."'");
-        if ($r11 = $s1->num_rows > 0) {
+        if ($s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
             return $r1[0];
         } else {
-            return null;
+            return 0;
         }
     }  
     
@@ -763,11 +839,11 @@ public function get_bypass_prod_reason($kpidate,$reason) {
        
         echo "<br>";
         $s1 = $this->query("select sum(10rfmr)from per_heat_production WHERE perheatdate= '" . $show_date ."'");
-        if ($r11 = $s1->num_rows > 0) {
+        if ($s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
             return $r1[0];
         } else {
-            return null;
+            return 0;
         }
     }  
     
@@ -777,11 +853,11 @@ public function get_bypass_prod_reason($kpidate,$reason) {
        
         echo "<br>";
         $s1 = $this->query("select sum(12rfmr)from per_heat_production WHERE perheatdate= '" . $show_date ."'");
-        if ($r11 = $s1->num_rows > 0) {
+        if ($s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
             return $r1[0];
         } else {
-            return null;
+            return 0;
         }
     }  
     
@@ -791,11 +867,11 @@ public function get_bypass_prod_reason($kpidate,$reason) {
        
         echo "<br>";
         $s1 = $this->query("select sum(16rfmr)from per_heat_production WHERE perheatdate= '" . $show_date ."'");
-        if ($r11 = $s1->num_rows > 0) {
+        if ($s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
             return $r1[0];
         } else {
-            return null;
+            return 0;
         }
     }  
     public function get_20_rfmr($kpidate) {
@@ -804,11 +880,11 @@ public function get_bypass_prod_reason($kpidate,$reason) {
        
         echo "<br>";
         $s1 = $this->query("select sum(20rfmr)from per_heat_production WHERE perheatdate= '" . $show_date ."'");
-        if ($r11 = $s1->num_rows > 0) {
+        if ($s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
             return $r1[0];
         } else {
-            return null;
+            return 0;
         }
     }  
     public function get_25_rfmr($kpidate) {
@@ -816,12 +892,12 @@ public function get_bypass_prod_reason($kpidate,$reason) {
         $show_date = DateTime::createFromFormat('d/m/Y', $kpi_date)->format('Y-m-d');
        
         echo "<br>";
-        $s1 = $this->query("select sum(8rfmr)from per_heat_production WHERE perheatdate= '" . $show_date ."'");
-        if ($r11 = $s1->num_rows > 0) {
+        $s1 = $this->query("select sum(25rfmr)from per_heat_production WHERE perheatdate= '" . $show_date ."'");
+        if ($s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
             return $r1[0];
         } else {
-            return null;
+            return 0;
         }
     }  
     public function get_28_rfmr($kpidate) {
@@ -829,12 +905,12 @@ public function get_bypass_prod_reason($kpidate,$reason) {
         $show_date = DateTime::createFromFormat('d/m/Y', $kpi_date)->format('Y-m-d');
        
         echo "<br>";
-        $s1 = $this->query("select sum(8rfmr)from per_heat_production WHERE perheatdate= '" . $show_date ."'");
-        if ($r11 = $s1->num_rows > 0) {
+        $s1 = $this->query("select sum(28rfmr)from per_heat_production WHERE perheatdate= '" . $show_date ."'");
+        if ($s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
             return $r1[0];
         } else {
-            return null;
+            return 0;
         }
     }  
     public function get_32_rfmr($kpidate) {
@@ -842,12 +918,12 @@ public function get_bypass_prod_reason($kpidate,$reason) {
         $show_date = DateTime::createFromFormat('d/m/Y', $kpi_date)->format('Y-m-d');
        
         echo "<br>";
-        $s1 = $this->query("select sum(8rfmr)from per_heat_production WHERE perheatdate= '" . $show_date ."'");
-        if ($r11 = $s1->num_rows > 0) {
+        $s1 = $this->query("select sum(32rfmr)from per_heat_production WHERE perheatdate= '" . $show_date ."'");
+        if ($s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
             return $r1[0];
         } else {
-            return null;
+            return 0;
         }
     }  
    public function get_8_cut($kpidate) {
@@ -856,11 +932,11 @@ public function get_bypass_prod_reason($kpidate,$reason) {
        
         echo "<br>";
         $s1 = $this->query("select sum(8cut)from per_heat_production WHERE perheatdate= '" . $show_date ."'");
-        if ($r11 = $s1->num_rows > 0) {
+        if ($s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
             return $r1[0];
         } else {
-            return null;
+            return 0;
         }
     }  
       public function get_10_cut($kpidate) {
@@ -869,11 +945,11 @@ public function get_bypass_prod_reason($kpidate,$reason) {
        
         echo "<br>";
         $s1 = $this->query("select sum(10cut)from per_heat_production WHERE perheatdate= '" . $show_date ."'");
-        if ($r11 = $s1->num_rows > 0) {
+        if ($s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
             return $r1[0];
         } else {
-            return null;
+            return 0;
         }
     }  
       public function get_12_cut($kpidate) {
@@ -882,11 +958,11 @@ public function get_bypass_prod_reason($kpidate,$reason) {
        
         echo "<br>";
         $s1 = $this->query("select sum(12cut)from per_heat_production WHERE perheatdate= '" . $show_date ."'");
-        if ($r11 = $s1->num_rows > 0) {
+        if ($s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
             return $r1[0];
         } else {
-            return null;
+            return 0;
         }
     }  
       public function get_16_cut($kpidate) {
@@ -895,11 +971,11 @@ public function get_bypass_prod_reason($kpidate,$reason) {
        
         echo "<br>";
         $s1 = $this->query("select sum(16cut)from per_heat_production WHERE perheatdate= '" . $show_date ."'");
-        if ($r11 = $s1->num_rows > 0) {
+        if ($s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
             return $r1[0];
         } else {
-            return null;
+            return 0;
         }
     }  
       public function get_20_cut($kpidate) {
@@ -908,11 +984,11 @@ public function get_bypass_prod_reason($kpidate,$reason) {
        
         echo "<br>";
         $s1 = $this->query("select sum(20cut)from per_heat_production WHERE perheatdate= '" . $show_date ."'");
-        if ($r11 = $s1->num_rows > 0) {
+        if ($s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
             return $r1[0];
         } else {
-            return null;
+            return 0;
         }
     }  
       public function get_25_cut($kpidate) {
@@ -921,11 +997,11 @@ public function get_bypass_prod_reason($kpidate,$reason) {
        
         echo "<br>";
         $s1 = $this->query("select sum(25cut)from per_heat_production WHERE perheatdate= '" . $show_date ."'");
-        if ($r11 = $s1->num_rows > 0) {
+        if ($s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
             return $r1[0];
         } else {
-            return null;
+            return 0;
         }
     }  
       public function get_28_cut($kpidate) {
@@ -934,11 +1010,11 @@ public function get_bypass_prod_reason($kpidate,$reason) {
        
         echo "<br>";
         $s1 = $this->query("select sum(28cut)from per_heat_production WHERE perheatdate= '" . $show_date ."'");
-        if ($r11 = $s1->num_rows > 0) {
+        if ( $s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
             return $r1[0];
         } else {
-            return null;
+            return 0;
         }
     }  
       public function get_32_cut($kpidate) {
@@ -947,13 +1023,134 @@ public function get_bypass_prod_reason($kpidate,$reason) {
        
         echo "<br>";
         $s1 = $this->query("select sum(32cut)from per_heat_production WHERE perheatdate= '" . $show_date ."'");
-        if ($r11 = $s1->num_rows > 0) {
+        if ($s1->num_rows > 0) {
             $r1 = $s1->fetch_row();
             return $r1[0];
         } else {
-            return null;
+            return 0;
         }
     }  
+    
+    
+     public function get_total_rolled_pcs($kpidate) {
+        $kpi_date = $this->real_escape_string($kpidate);
+        $show_date = DateTime::createFromFormat('d/m/Y', $kpi_date)->format('Y-m-d');
+       
+        echo "<br>";
+        $s1 = $this->query("select sum(totalrolledpcs)from per_heat_production WHERE perheatdate= '" . $show_date ."'");
+        if ($s1->num_rows > 0) {
+            $r1 = $s1->fetch_row();
+            echo "rolledpcs";
+            return $r1[0];
+        } else {
+            return 0;
+        }
+    }  
+     public function get_total_billets_bypass($kpidate) {
+        $kpi_date = $this->real_escape_string($kpidate);
+        $show_date = DateTime::createFromFormat('d/m/Y', $kpi_date)->format('Y-m-d');
+       echo $show_date;
+        echo "<br>";
+        $s1 = $this->query("select sum(total) from breakdown WHERE date= '" . $show_date ."'");
+        if ($s1->num_rows > 0) {
+            $r1 = $s1->fetch_row();
+            echo "billetsbypass";
+            return $r1[0];
+        } else {
+            return 0;
+        }
+    }  
+    
+    
+    public function get_total_hotrolling_of_shift($kpidate,$shift) {
+        $kpi_date = $this->real_escape_string($kpidate);
+        $shift = $this->real_escape_string($shift);
+        $show_date = DateTime::createFromFormat('d/m/Y', $kpi_date)->format('Y-m-d');
+       echo $show_date;
+       echo "shift";
+       echo $shift;
+        echo "<br>";
+        $s1 = $this->query("select sum(`hotrolling`)/count(`heat-number`) from per_heat_production WHERE perheatdate= '" . $show_date ."' and shift='".$shift."'");
+        if ($s1->num_rows > 0) {
+            $r1 = $s1->fetch_row();
+            
+            return $r1[0];
+        } else {
+            return 0;
+        }
+    }  
+    
+    
+    
+public function get_total_missroll_of_shift($kpidate,$shift) {
+        $kpi_date = $this->real_escape_string($kpidate);
+        $shift = $this->real_escape_string($shift);
+        $show_date = DateTime::createFromFormat('d/m/Y', $kpi_date)->format('Y-m-d');
+       echo $show_date;
+       echo "shift";
+       echo $shift;
+        echo "<br>";
+        $s1 = $this->query("select sum(`missroll`) from per_heat_production WHERE perheatdate= '" . $show_date ."' and shift='".$shift."'");
+        if ($s1->num_rows > 0) {
+            $r1 = $s1->fetch_row();
+            
+            return $r1[0];
+        } else {
+            return 0;
+        }
+    }  
+    
+  public function get_total_missroll_of_dept_in_shift($kpidate,$shift,$department) {
+        $kpi_date = $this->real_escape_string($kpidate);
+        $shift = $this->real_escape_string($shift);
+        $department = $this->real_escape_string($department);
+        $show_date = DateTime::createFromFormat('d/m/Y', $kpi_date)->format('Y-m-d');
+       echo $show_date;
+       echo "shift";
+       echo $shift;
+        echo "<br>";
+        $s1 = $this->query("select sum(`total_mr`) from breakdown WHERE date= '" . $show_date ."' and shift='".$shift."' and department='".$department."'");
+        if ($s1->num_rows > 0) {
+            $r1 = $s1->fetch_row();
+            
+            return $r1[0];
+        } else {
+            return 0;
+        }
+    }    
+    
+    
+    
+    /** public function get_First_Heat_Start_Time($kpidate) {
+        $kpi_date = $this->real_escape_string($kpidate);
+        $show_date = DateTime::createFromFormat('d/m/Y', $kpi_date)->format('Y-m-d');
+       echo $show_date;
+        echo "<br>";
+        $s1 = $this->query("select `heat-start-time` from per_heat_production WHERE `heat-number` = 1 and perheatdate = '".$show_date."'");
+        if ( $s1->num_rows > 0) {
+            $r1 = $s1->fetch_row();
+            echo $r1[0];
+            echo "heatstarttime";
+            return $r1[0];
+        } else {
+            return 0;
+        }
+    }  
+    public function get_Last_Heat_End_Time($kpidate) {
+        $kpi_date = $this->real_escape_string($kpidate);
+        $show_date = DateTime::createFromFormat('d/m/Y', $kpi_date)->format('Y-m-d');
+       echo $show_date;
+        echo "<br>";
+        $s1 = $this->query("select `heat-end-time` from per_heat_production WHERE perheatdate='".$show_date."' and  `heat-number` in (select max(`heat-number`) from per_heat_production where perheatdate='".$show_date."')");
+        if ( $s1->num_rows > 0) {
+            $r1 = $s1->fetch_row();
+            echo $r1[0];
+            echo "heatendtime";
+            return $r1[0];
+        } else {
+            return 0;
+        }
+    }  */
     
     
         }
